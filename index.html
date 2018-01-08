@@ -1,0 +1,193 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=no">
+	<title>PhotoPizza Remote Control</title>
+  <meta name="description" content="PRODUCT PHOTOGRAPHY AUTOMATIC TURNTABLE">
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu+Condensed" rel="stylesheet">
+</head>
+<body>
+  <style>
+    body {
+      padding: 0;
+      margin: 0;
+      font-family: 'Ubuntu Condensed', sans-serif;
+      
+			--mesh-step: 10px;
+      --primary-bg-color: #212121;
+			--primary-color: #81D4FA;
+			--secondary-bg-color: #FAFAFA;
+			--secondary-color: #212121;
+			--accent-color: #81D4FA;
+			--ui-height: 38px;
+
+      --theme-1: rgb(255, 213, 74);
+			--theme-2: #8BC34A;
+			--theme-3: rgb(145, 253, 239);
+			--theme-4: rgb(101, 224, 255);
+			--theme-5: #F48FB1;
+			--theme-6: rgb(220, 168, 255);
+			--theme-7: rgb(126, 221, 169);
+			--theme-8: rgb(174, 219, 255);
+			--theme-9: #ffcc6b;
+			
+			--theme-11: #97ffd4;
+      --theme-10: #ff8453;
+
+      background-color: var(--secondary-color);
+      color: var(--theme-9);
+    }
+		caption-mkp {
+			font-size: 1.2em;
+		}
+    brwsr-shell {
+			
+
+			/* --styling-transform: skewY(-15deg); */
+			--styling-transform-origin: top left;
+    }
+		.logo {
+			padding: var(--mesh-step);
+			padding-bottom: calc(var(--mesh-step) * 2);
+		}
+		.logo logo-el {
+			--color-1: currentColor;
+			--color-2: var(--accent-color);
+		}
+
+    [tab-context] {
+      display: none;
+    }
+    body[current-tab="remote"] [tab-context="remote"] {
+      display: block;
+    }
+    body[current-tab="settings"] [tab-context="settings"] {
+      display: block;
+    }
+    .input-name {
+      min-width: 110px;
+      text-align: right;
+    }
+    .top-toolbar {
+      color: var(--secondary-color);
+      background-color: var(--theme-9);
+    }
+    body[state="open"] [disconnected] {
+			display: none;
+		}
+    [icon="open"] {
+      color: greenyellow;
+    }
+    [icon="close"] {
+      color: red;
+    }
+    .status {
+      width: var(--ui-height);
+      height: var(--ui-height);
+      background-color: currentColor;
+      border-radius: 5px;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+    }
+  </style>
+  
+  <div class="top-toolbar">
+      <space-mkp min></space-mkp>
+    <column-mkp>
+      <flex-mkp v-center gap-min>
+        <div class="status">
+          <icon-ui id="status-icon" icon="close"></icon-ui>
+        </div>
+        <!-- <div class="input-name">PhotoPizza IP</div> -->
+        <input-ui type="url" id="ip-inp" placeholder="PhotoPizza IP"></input-ui>
+        <div disconnected>
+          <button-ui outline id="connect-btn" icon="connect">Connect</button-ui>
+        </div>
+      </flex-mkp>
+    </column-mkp>
+    <space-mkp min></space-mkp>
+  </div>
+  
+  <column-mkp>
+    <space-mkp max></space-mkp>
+    <space-mkp max></space-mkp>
+    <tabs-ui id="tab-selector">
+      <div active tab="remote" icon="remote">Remote Control</div>
+      <div tab="settings" icon="settings">Settings</div>
+    </tabs-ui>
+    <space-mkp></space-mkp>
+    
+
+    <div tab-context="remote">
+      <space-mkp max></space-mkp>
+      <button-ui outline id="start-btn">Go!</button-ui>
+    </div>
+
+    
+    <space-mkp max></space-mkp>
+    <div tab-context="settings">
+      <space-mkp max></space-mkp>   
+      <flex-mkp v-center gap-max>
+        <div class="input-name">Shooting Mode</div>
+        <select-ui id="shootingMode-sel">
+          <div option="inter">Interval</div>
+          <div option="pingP">Ping-Pong</div>
+        </select-ui>
+      </flex-mkp>
+
+      <space-mkp max></space-mkp>
+
+      <flex-mkp v-center gap-max>
+        <div class="input-name">Direction</div>
+        <select-ui id="direction-sel">
+          <div option="1">Clockwise</div>
+          <div option="0">Counterclockwise</div>
+        </select-ui>
+      </flex-mkp>
+  
+      <space-mkp max></space-mkp>
+
+      <flex-mkp v-center gap-max>
+        <div class="input-name">Frame Number</div>
+        <input-ui type="number" id="frame-inp" placeholder="Frame number"></input-ui>
+      </flex-mkp>
+
+      <space-mkp max></space-mkp>
+
+      <flex-mkp v-center gap-max>
+        <div class="input-name">Speed</div>
+        <input-ui type="number" id="speed-inp" placeholder="Speed"></input-ui>
+      </flex-mkp>
+    
+      <space-mkp max></space-mkp>
+
+      <flex-mkp v-center gap-max>
+        <div class="input-name">Pause</div>
+        <input-ui type="number" id="pause-inp" placeholder="Pause"></input-ui>
+      </flex-mkp>
+    
+      <space-mkp max></space-mkp>
+
+      <flex-mkp v-center gap-max>
+        <div class="input-name">Delay</div>
+        <input-ui type="number" id="delay-inp" placeholder="Delay"></input-ui>
+      </flex-mkp>
+    
+      <space-mkp max></space-mkp>
+
+      <flex-mkp v-center gap-max>
+        <div class="input-name">All Steps</div>
+        <input-ui type="number" id="allSteps-inp" placeholder="All Steps"></input-ui>
+      </flex-mkp>
+    
+      <space-mkp max></space-mkp>
+
+    </div>
+  </column-mkp>
+  
+</body>
+<script src="remote.js"></script>
+<script src="uilib/exports.js" type="module"></script>
+</html> 
