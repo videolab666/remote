@@ -6,12 +6,13 @@ if (!window['AppIconsMap']) {
 }
 
 (function() {
-  const config = {
+  var config = {
     firmwareVersion: 'PhotoPizza v4',
     wifiSsid: 'PIZZA2000',
     wifiPassword: '9994501234',
     wsPort: 8000,
-    state: '',
+    state: 'waiting',
+    framesLeft: 36,
     frame: 36,
     allSteps: 109295,
     pause: 100,
@@ -21,6 +22,7 @@ if (!window['AppIconsMap']) {
     shootingMode: 'inter',
     direction: 1
   };
+ 
   let configStr = JSON.stringify(config);
   let photoPizzaIP = '192.168.1.62';
   const $ = {};
@@ -29,6 +31,8 @@ if (!window['AppIconsMap']) {
   elementsWithIdsArr.forEach((el, idx) => {
     $[el.getAttribute('id')] = el;
   });
+
+  $['frame-left'].textContent = config.framesLeft;
 
   $['ip-inp'].setAttribute('value', photoPizzaIP);
   $['ip-inp'].oninput = (e) => {
@@ -48,6 +52,8 @@ if (!window['AppIconsMap']) {
   $['frame-inp'].setAttribute('value', config.frame);
   $['frame-inp'].oninput = (e) => {
     config.frame = $['frame-inp'].value;
+    config.framesLeft = $['frame-inp'].value;
+    $['frame-left'].textContent = config.framesLeft;
   };
   
   $['speed-inp'].setAttribute('value', config.speed);
@@ -81,7 +87,16 @@ if (!window['AppIconsMap']) {
   let ws;
   const connect = () => {
     ws = new WebSocket(`ws://${photoPizzaIP}:8000`, "protocolOne");
-    ws.onmessage = function (event) { console.log(JSON.parse(event.data)); };
+    //ws.onmessage = function (event) { console.log(JSON.parse(event.data)); };
+    ws.onmessage = (e) => {
+      console.log(JSON.parse(e.data));
+      let configIn = JSON.parse(e.data);
+      if (configIn.state === 'started') {
+        setStatus(configIn.state);
+        config = configIn;
+        $['frame-left'].textContent = config.framesLeft;
+      }
+    }
     ws.onopen = (e) => {
       setStatus(e.type);
     }
@@ -94,6 +109,7 @@ if (!window['AppIconsMap']) {
   }
       
   const start = () => {
+    config.state = 'start';
     configStr = JSON.stringify(config);
     ws.send(configStr);
   }

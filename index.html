@@ -10,7 +10,8 @@
 <body>
   <style>
     body {
-      padding: 0;
+      padding: 10px;
+      padding-top: 50px;
       margin: 0;
       font-family: 'Ubuntu Condensed', sans-serif;
       
@@ -70,8 +71,14 @@
       text-align: right;
     }
     .top-toolbar {
+      position: fixed;
+      padding: 10px;
+      top: 0;
+      left: 0;
+      right: 0;
       color: var(--secondary-color);
       background-color: var(--theme-9);
+      z-index: 1000;
     }
     body[state="open"] [disconnected] {
 			display: none;
@@ -80,7 +87,7 @@
       color: greenyellow;
     }
     [icon="close"] {
-      color: red;
+      color: rgb(255, 70, 70);
     }
     .status {
       width: var(--ui-height);
@@ -90,6 +97,21 @@
       display: inline-flex;
       justify-content: center;
       align-items: center;
+    }
+    #frame-left {
+      font-size: 200px;
+    }
+    #photopizza {
+      width: 400px;
+      height: 400px;
+      /* background-color: var(--secondary-color); */
+      border-radius: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-style: dashed;
+      border-color: currentColor;
+      transform: rotate(0deg);
     }
   </style>
   
@@ -121,6 +143,13 @@
     
 
     <div tab-context="remote">
+        <space-mkp max></space-mkp>
+        <flex-mkp wrap v-center h-center gap-max>
+          <div id="photopizza">
+            <div id="frame-left"></div>
+            <!-- <div>Frames</div> -->
+          </div>
+        </flex-mkp>
       <space-mkp max></space-mkp>
       <button-ui outline id="start-btn">Go!</button-ui>
     </div>
@@ -129,7 +158,7 @@
     <space-mkp max></space-mkp>
     <div tab-context="settings">
       <space-mkp max></space-mkp>   
-      <flex-mkp v-center gap-max>
+      <flex-mkp wrap v-center gap-max>
         <div class="input-name">Shooting Mode</div>
         <select-ui id="shootingMode-sel">
           <div option="inter">Interval</div>
@@ -139,7 +168,7 @@
 
       <space-mkp max></space-mkp>
 
-      <flex-mkp v-center gap-max>
+      <flex-mkp wrap v-center gap-max>
         <div class="input-name">Direction</div>
         <select-ui id="direction-sel">
           <div option="1">Clockwise</div>
@@ -149,35 +178,35 @@
   
       <space-mkp max></space-mkp>
 
-      <flex-mkp v-center gap-max>
-        <div class="input-name">Frame Number</div>
-        <input-ui type="number" id="frame-inp" placeholder="Frame number"></input-ui>
+      <flex-mkp wrap v-center gap-max>
+        <div class="input-name">Frames total</div>
+        <input-ui type="number" id="frame-inp" placeholder="Frames total"></input-ui>
       </flex-mkp>
 
       <space-mkp max></space-mkp>
 
-      <flex-mkp v-center gap-max>
+      <flex-mkp wrap v-center gap-max>
         <div class="input-name">Speed</div>
         <input-ui type="number" id="speed-inp" placeholder="Speed"></input-ui>
       </flex-mkp>
     
       <space-mkp max></space-mkp>
 
-      <flex-mkp v-center gap-max>
+      <flex-mkp wrap v-center gap-max>
         <div class="input-name">Pause</div>
         <input-ui type="number" id="pause-inp" placeholder="Pause"></input-ui>
       </flex-mkp>
     
       <space-mkp max></space-mkp>
 
-      <flex-mkp v-center gap-max>
+      <flex-mkp wrap v-center gap-max>
         <div class="input-name">Delay</div>
         <input-ui type="number" id="delay-inp" placeholder="Delay"></input-ui>
       </flex-mkp>
     
       <space-mkp max></space-mkp>
 
-      <flex-mkp v-center gap-max>
+      <flex-mkp wrap v-center gap-max>
         <div class="input-name">All Steps</div>
         <input-ui type="number" id="allSteps-inp" placeholder="All Steps"></input-ui>
       </flex-mkp>
