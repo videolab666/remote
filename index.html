@@ -80,6 +80,18 @@
       background-color: var(--theme-9);
       z-index: 1000;
     }
+    .bottom-toolbar {
+      position: fixed;
+      padding: 10px;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      color: var(--secondary-color);
+      background-color: var(--theme-9);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
     body[state="open"] [disconnected] {
 			display: none;
 		}
@@ -109,10 +121,39 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      border-style: dashed;
-      border-color: currentColor;
-      transform: rotate(0deg);
+      /* border-style: dashed; */
+      /* border-color: currentColor; */
+      /* transform: rotate(360deg); */
+      transition: 1s;
+      transform: scale(0.8);
     }
+    #degree {
+      position: absolute;
+      width: 400px;
+      /* transform-origin: left center; */
+      text-align: right;
+      /* height: 40px; */
+      /* border-radius: 100%; */
+      /* background-color: var(--theme-9); */
+      /* transform: translate(100px, 0); */
+      transition: 1s;
+    }
+    #turn-section {
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      /* background-color: var(--secondary-color); */
+      border-radius: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      /* border-style: dashed; */
+      border-color: currentColor;
+    }
+    /* #start-btn {
+      position: absolute;
+      display: flex;
+    } */
   </style>
   
   <div class="top-toolbar">
@@ -143,15 +184,15 @@
     
 
     <div tab-context="remote">
-        <space-mkp max></space-mkp>
-        <flex-mkp wrap v-center h-center gap-max>
-          <div id="photopizza">
-            <div id="frame-left"></div>
-            <!-- <div>Frames</div> -->
-          </div>
-        </flex-mkp>
       <space-mkp max></space-mkp>
-      <button-ui outline id="start-btn">Go!</button-ui>
+      <flex-mkp  h-center v-center gap-min>
+        <div id="photopizza">
+          <div id="turn-section"></div>
+          <div id="frame-left"></div>
+          <div id="degree">></div>
+        </div>
+      </flex-mkp>
+      <space-mkp max></space-mkp>
     </div>
 
     
@@ -215,7 +256,15 @@
 
     </div>
   </column-mkp>
-  
+  <div class="bottom-toolbar">
+    <column-mkp>
+        <flex-mkp  h-center v-center gap-min>
+          <button-ui outline id="cw-btn">CW</button-ui>
+          <button-ui outline id="start-btn">Start</button-ui>
+          <button-ui outline id="ccw-btn">CCW</button-ui>
+        </flex-mkp>
+    </column-mkp>
+  </div>
 </body>
 <script src="remote.js"></script>
 <script src="uilib/exports.js" type="module"></script>

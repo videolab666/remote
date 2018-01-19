@@ -40,20 +40,21 @@ if (!window['AppIconsMap']) {
   };
 
   $['shootingMode-sel'].setAttribute('value', config.shootingMode);
-  $['shootingMode-sel'].addEventListener('change', (e) => {
+  $['shootingMode-sel'].onchange = (e) => {
     config.shootingMode = $['shootingMode-sel'].value;
-  })
+  };
 
   $['direction-sel'].setAttribute('value', config.direction + '');
-  $['direction-sel'].addEventListener('change', (e) => {
+  $['direction-sel'].onchange = (e) => {
     config.direction = $['direction-sel'].value * 1;
-  })
+  };
 
   $['frame-inp'].setAttribute('value', config.frame);
   $['frame-inp'].oninput = (e) => {
     config.frame = $['frame-inp'].value;
     config.framesLeft = $['frame-inp'].value;
     $['frame-left'].textContent = config.framesLeft;
+    setTurnSection();
   };
   
   $['speed-inp'].setAttribute('value', config.speed);
@@ -83,18 +84,29 @@ if (!window['AppIconsMap']) {
   $['start-btn'].onclick = (e) => {
     start();
   };
-  
+
   let ws;
   const connect = () => {
     ws = new WebSocket(`ws://${photoPizzaIP}:8000`, "protocolOne");
     //ws.onmessage = function (event) { console.log(JSON.parse(event.data)); };
     ws.onmessage = (e) => {
-      console.log(JSON.parse(e.data));
       let configIn = JSON.parse(e.data);
       if (configIn.state === 'started') {
-        setStatus(configIn.state);
+        //setStatus(configIn.state);
         config = configIn;
+        let dir = 1;
+        if (config.direction === 1) {
+          dir = -1;
+        } else {
+          dir = 1;
+        }
+        let currentDeg = (360 / config.frame) * config.framesLeft * dir;
         $['frame-left'].textContent = config.framesLeft;
+        $['degree'].style.transform = `rotate(${currentDeg}deg)`;
+        let elem = document.getElementById(`i${config.frame - config.framesLeft}`);
+        elem.style.color = '#8BC34A';
+        elem.textContent = `-`;
+        //$['degree'].style.transform += `translate(100px, 0)`;
       }
     }
     ws.onopen = (e) => {
@@ -107,6 +119,28 @@ if (!window['AppIconsMap']) {
       setStatus(e.type);
     };
   }
+
+  const setTurnSection = () => {
+    
+    let deg = 360 / config.frame;
+
+    $['turn-section'].textContent = ``;
+    if (config.frame > 360) {
+      return;
+    }
+
+    for (var i = 0; i < config.frame; i++) {
+      $['turn-section'].innerHTML += `<div id="i${i}">----</div>`;
+      let elem = document.getElementById(`i${i}`);
+      elem.style.transform = 'translate(110px, 0)';
+      elem.style.transform += `rotate(${deg * i}deg)`;
+      elem.style.transformOrigin = 'left center';
+      elem.style.width = '220px';
+      elem.style.position = 'absolute';
+      elem.style.textAlign = 'right';
+      elem.style.transition = '1s';
+    }
+  } 
       
   const start = () => {
     config.state = 'start';
@@ -135,4 +169,5 @@ if (!window['AppIconsMap']) {
 
   Object.assign(window['AppIconsMap'], icons);
   
+  setTurnSection();
 })();
