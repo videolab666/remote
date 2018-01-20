@@ -7,7 +7,7 @@ if (!window['AppIconsMap']) {
 
 (function() {
   var config = {
-    firmwareVersion: 'PhotoPizza v4',
+    firmwareVersion: '',
     wifiSsid: 'PIZZA2000',
     wifiPassword: '9994501234',
     wsPort: 8000,
@@ -84,6 +84,9 @@ if (!window['AppIconsMap']) {
   $['start-btn'].onclick = (e) => {
     start();
   };
+  $['stop-btn'].onclick = (e) => {
+    stop();
+  };
 
   let ws;
   const connect = () => {
@@ -91,6 +94,7 @@ if (!window['AppIconsMap']) {
     //ws.onmessage = function (event) { console.log(JSON.parse(event.data)); };
     ws.onmessage = (e) => {
       let configIn = JSON.parse(e.data);
+      console.log(configIn.state);
       if (configIn.state === 'started') {
         //setStatus(configIn.state);
         config = configIn;
@@ -103,47 +107,74 @@ if (!window['AppIconsMap']) {
         let currentDeg = (360 / config.frame) * config.framesLeft * dir;
         $['frame-left'].textContent = config.framesLeft;
         $['degree'].style.transform = `rotate(${currentDeg}deg)`;
-        let elem = document.getElementById(`i${config.frame - config.framesLeft}`);
-        elem.style.color = '#8BC34A';
-        elem.textContent = `-`;
+        let elem = document.getElementById(`section-deg${config.frame - config.framesLeft - 1}`);
+        elem.style.backgroundColor = '#1b1b1b';
         //$['degree'].style.transform += `translate(100px, 0)`;
+      }
+      if (configIn.state === 'waiting') {
+        setTurnSection();
+        config.state = configIn.state;
       }
     }
     ws.onopen = (e) => {
       setStatus(e.type);
+      console.log('connected');
     }
     ws.onerror = (e) => {
       setStatus(e.type);
+      console.log('error');
+      setTurnSection();
     };
     ws.onclose = (e) => {
       setStatus(e.type);
+      console.log('disconnected');
+      setTurnSection();
     };
   }
 
   const setTurnSection = () => {
+
+    config.framesLeft = config.frame;
+    $['frame-left'].textContent = config.framesLeft;
     
     let deg = 360 / config.frame;
-
     $['turn-section'].textContent = ``;
-    if (config.frame > 360) {
-      return;
-    }
-
+    
+    let fragment = document.createDocumentFragment();
     for (var i = 0; i < config.frame; i++) {
-      $['turn-section'].innerHTML += `<div id="i${i}">----</div>`;
-      let elem = document.getElementById(`i${i}`);
-      elem.style.transform = 'translate(110px, 0)';
-      elem.style.transform += `rotate(${deg * i}deg)`;
-      elem.style.transformOrigin = 'left center';
-      elem.style.width = '220px';
-      elem.style.position = 'absolute';
-      elem.style.textAlign = 'right';
-      elem.style.transition = '1s';
+      let elem = document.createElement('div');
+      elem.id = 'i' + i;
+      elem.innerHTML = `<div id="section-deg${i}" class="section-deg"></div>`;
+      let conf = {
+        'transform': `translate(110px, 0) rotate(${deg * i}deg)`,
+        'transform-origin': 'left center',
+        'width': '220px',
+        'position': 'absolute',
+        'text-align': 'right',
+        'transition': '1s',
+      }
+      Object.keys(conf).forEach((prop) => {
+        elem.style.setProperty(prop, conf[prop]);
+      });
+      fragment.appendChild(elem);
     }
+    $['turn-section'].appendChild(fragment);
   } 
       
   const start = () => {
+    if (config.state != 'waiting') {
+      return;
+    }
     config.state = 'start';
+    configStr = JSON.stringify(config);
+    ws.send(configStr);
+  }
+
+  const stop = () => {
+    if (config.state === 'waiting') {
+      return;
+    }
+    config.state = 'stop';
     configStr = JSON.stringify(config);
     ws.send(configStr);
   }
@@ -153,9 +184,9 @@ if (!window['AppIconsMap']) {
     $['status-icon'].setAttribute('icon', state);
   }
 
-  $['tab-selector'].addEventListener('change', (e) => {
-    document.body.setAttribute('current-tab', e.detail);
-  });
+  // $['tab-selector'].addEventListener('change', (e) => {
+  //   document.body.setAttribute('current-tab', e.detail);
+  // });
 
   document.body.setAttribute('current-tab', 'remote');
 
