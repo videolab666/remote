@@ -12,8 +12,8 @@ if (!window['AppIconsMap']) {
     wifiPassword: '9994501234',
     wsPort: 8000,
     state: 'waiting',
-    framesLeft: 36,
-    frame: 36,
+    framesLeft: 100,
+    frame: 100,
     allSteps: 109295,
     pause: 100,
     delay: 300,
@@ -99,16 +99,19 @@ if (!window['AppIconsMap']) {
         //setStatus(configIn.state);
         config = configIn;
         let dir = 1;
+        let elem = {};
         if (config.direction === 1) {
+          elem = document.getElementById(`section-deg${config.frame - config.framesLeft}`);
           dir = -1;
         } else {
           dir = 1;
+          elem = document.getElementById(`section-deg${config.framesLeft}`);
         }
         let currentDeg = (360 / config.frame) * config.framesLeft * dir;
         $['frame-left'].textContent = config.framesLeft;
         $['degree'].style.transform = `rotate(${currentDeg}deg)`;
-        let elem = document.getElementById(`section-deg${config.frame - config.framesLeft - 1}`);
-        elem.style.backgroundColor = '#1b1b1b';
+        
+        elem.style.backgroundColor = '#42361e';
         //$['degree'].style.transform += `translate(100px, 0)`;
       }
       if (configIn.state === 'waiting') {
@@ -146,9 +149,9 @@ if (!window['AppIconsMap']) {
       elem.id = 'i' + i;
       elem.innerHTML = `<div id="section-deg${i}" class="section-deg"></div>`;
       let conf = {
-        'transform': `translate(110px, 0) rotate(${deg * i}deg)`,
+        'transform': `translate(80px, 0) rotate(${deg * i}deg)`,
         'transform-origin': 'left center',
-        'width': '220px',
+        'width': '160px',
         'position': 'absolute',
         'text-align': 'right',
         'transition': '1s',
@@ -187,6 +190,19 @@ if (!window['AppIconsMap']) {
   // $['tab-selector'].addEventListener('change', (e) => {
   //   document.body.setAttribute('current-tab', e.detail);
   // });
+
+  window.onscroll = function() {
+    var scrolled = window.pageYOffset || document.documentElement.scrollTop;
+    console.log(scrolled);
+    let scalePh = 1.0;
+    let opacityPh = 1.0;
+    if (scrolled > 200) {
+      scalePh = 0.8;
+      opacityPh = 0;
+    }
+    $['photopizza'].style.transform = 'scale(' + scalePh + ')';
+    $['photopizza'].style.opacity = opacityPh;
+  }
 
   document.body.setAttribute('current-tab', 'remote');
 

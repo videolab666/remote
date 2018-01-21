@@ -35,8 +35,8 @@
 			
 			--theme-11: #97ffd4;
       --theme-10: #ff8453;
-
-      background-color: var(--secondary-color);
+      background: linear-gradient(to bottom right, #42361e, var(--secondary-color));
+      /* background-color: var(--secondary-color); */
       color: var(--theme-9);
     }
 		caption-mkp {
@@ -114,27 +114,29 @@
       align-items: center;
     }
     #frame-left {
-      font-size: 200px;
+      font-size: 150px;
     }
     #photopizza {
-      width: 380px;
-      height: 380px;
-      min-width: 380px;
-      min-height: 380px;
-      background-color: #1b1b1b;
+      width: 340px;
+      height: 340px;
+      min-width: 340px;
+      min-height: 340px;
+      /* background-color: #1b1b1b; */
       border-radius: 100%;
       display: flex;
       justify-content: center;
       align-items: center;
+      transition: 2s;
+      color: #42361e;
+      background: radial-gradient(#ffcc6b, #a78548, #5f4c29);
+      /* transform: scale(0.7); */
       /* border-style: dashed; */
       /* border-color: currentColor; */
       /* transform: rotate(360deg); */
-      transition: 1s;
-      /* transform: scale(0.8); */
     }
     #degree {
       position: absolute;
-      width: 360px;
+      width: 260px;
       /* transform-origin: left center; */
       text-align: right;
       display: flex;
@@ -165,14 +167,16 @@
       background-color: currentColor;
       border-radius: 100%;
       right: 0;
+      transition: 1s;
     }
     .section-deg {
       position: absolute;
       width: 20px;
       height: 3px;
-      background-color: currentColor;
+      background-color: #ffcc6b;
       right: 0;
       border-radius: 2px 2px 2px 2px;
+      transition: 1s;
     }
     /* #start-btn {
       position: absolute;
@@ -181,7 +185,7 @@
 
     @media screen and (orientation: portrait) { 
       #photopizza {
-        transform: scale(0.8);
+        transform: scale(0.7);
       }
     }
   </style>
@@ -204,8 +208,6 @@
   </div>
   <space-mkp max></space-mkp>
   <space-mkp max></space-mkp>
-  <space-mkp max></space-mkp>
-  <space-mkp max></space-mkp>
   <column-mkp>
     <flex-mkp  h-center gap-min>
       <div id="photopizza">
@@ -216,15 +218,12 @@
         </div>
       </div>
     </flex-mkp>
-      
+    <space-mkp max></space-mkp>  
     <!-- <tabs-ui id="tab-selector">
       <div active tab="remote" icon="remote">Remote Control</div>
       <div tab="settings" icon="settings">Settings</div>
     </tabs-ui> -->
-    <space-mkp max></space-mkp>
-    <space-mkp max></space-mkp>
-    <space-mkp max></space-mkp>
-    <space-mkp max></space-mkp>
+   
     <flex-mkp wrap h-center gap-max>
       <div>
         <flex-mkp v-center gap-max>
