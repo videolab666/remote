@@ -95,6 +95,7 @@ if (!window['AppIconsMap']) {
     ws.onmessage = (e) => {
       let configIn = JSON.parse(e.data);
       config = configIn;
+      $['allSteps-inp'].value = config.allSteps;
       console.log(configIn.state);
       if (configIn.state === 'started') {
         //setStatus(configIn.state);
