@@ -136,7 +136,7 @@
     }
     #degree {
       position: absolute;
-      width: 260px;
+      width: 270px;
       /* transform-origin: left center; */
       text-align: right;
       display: flex;
@@ -160,12 +160,15 @@
       /* border-style: dashed; */
       /* border-color: currentColor; */
     }
-    .cursor {
+    #cursor-icon {
       position: absolute;
       width: 20px;
       height: 20px;
-      background-color: currentColor;
-      border-radius: 100%;
+      min-width: 20px;
+      min-height: 20px;
+      /* background-color: currentColor; */
+      /* border-radius: 5px 0 5px 10px; */
+      transform: rotate(90deg);
       right: 0;
       transition: 1s;
     }
@@ -182,7 +185,10 @@
       position: absolute;
       display: flex;
     } */
-
+    #save-btn :hover {
+      background-color: #ff8453;
+      color: #8BC34A;
+    }
     @media screen and (orientation: portrait) { 
       #photopizza {
         transform: scale(0.7);
@@ -202,6 +208,8 @@
         <div disconnected>
           <button-ui outline id="connect-btn" icon="connect">Connect</button-ui>
         </div>
+        <!-- <button-ui outline id="save-btn">Save</button-ui>
+        <button-ui outline id="info-btn">Info</button-ui> -->
       </flex-mkp>
     </column-mkp>
     <space-mkp min></space-mkp>
@@ -214,7 +222,8 @@
         <div id="turn-section"></div>
         <div id="frame-left"></div>
         <div id="degree">
-          <div class="cursor"></div>
+          <!-- <div icon="cursor" class="cursor"></div> -->
+          <icon-ui id="cursor-icon" icon="cursor"></icon-ui>
         </div>
       </div>
     </flex-mkp>
@@ -280,6 +289,21 @@
             <div option="0">Counterclockwise</div>
           </select-ui>
         </flex-mkp>
+
+        <space-mkp max></space-mkp>
+
+        <flex-mkp v-center gap-max>
+          <div class="input-name">WiFi name</div>
+          <input-ui type="streeng" id="wifiname-inp" placeholder="WiFi name"></input-ui>
+        </flex-mkp>
+
+        <space-mkp max></space-mkp>
+
+        <flex-mkp v-center gap-max>
+          <div class="input-name">WiFi password</div>
+          <input-ui type="streeng" id="wifipassword-inp" placeholder="WiFi password"></input-ui>
+        </flex-mkp>
+
       </div>
     </flex-mkp>
   </column-mkp>
