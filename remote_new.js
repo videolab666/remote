@@ -24,7 +24,7 @@ if (!window['AppIconsMap']) {
   };
  
   let configStr = JSON.stringify(config);
-  let photoPizzaIP = '192.168.1.62';
+  let photoPizzaIP = '192.168.4.1';
   const $ = {};
   
   let elementsWithIdsArr = [...document.querySelectorAll('[id]')];
@@ -75,6 +75,10 @@ if (!window['AppIconsMap']) {
   $['allSteps-inp'].setAttribute('value', config.allSteps);
   $['allSteps-inp'].oninput = (e) => {
     config.allSteps = $['allSteps-inp'].value;
+  };
+  
+  $['save-btn'].onclick = (e) => {
+    save();
   };
 
   $['connect-btn'].onclick = (e) => {
@@ -164,6 +168,15 @@ if (!window['AppIconsMap']) {
     }
     $['turn-section'].appendChild(fragment);
   } 
+  
+   const save = () => {
+    if (config.state != 'waiting') {
+      return;
+    }
+    config.state = 'save';
+    configStr = JSON.stringify(config);
+    ws.send(configStr);
+  }
       
   const start = () => {
     if (config.state != 'waiting') {
