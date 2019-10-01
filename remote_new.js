@@ -170,9 +170,6 @@ if (!window['AppIconsMap']) {
   } 
   
    const save = () => {
-    if (config.state != 'waiting') {
-      return;
-    }
     config.state = 'save';
     configStr = JSON.stringify(config);
     ws.send(configStr);
