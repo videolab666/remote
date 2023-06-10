@@ -8,7 +8,7 @@ if (!window['AppIconsMap']) {
 (function() {
   var config = {
     firmwareVersion: '',
-    wifiSsid: 'PIZZA2000',
+    wifiSsid: 'DF_ap',
     wifiPassword: '9994501234',
     wsPort: 8000,
     state: 'waiting',
